@@ -15,12 +15,6 @@
 
 (define-key shell-mode-map (kbd "C-c c b") 'clear-shell)
 
-(autoload 'bash-completion-dynamic-complete
-  "bash-completion"
-  "BASH completion hook")
-(add-hook 'shell-dynamic-complete-functions
-	  'bash-completion-dynamic-complete)
-
 (setq sh-basic-offset 8 sh-indentation 8)
 
 (provide 'init-shell)
