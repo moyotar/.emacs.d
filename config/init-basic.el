@@ -76,6 +76,7 @@
 (custom-set-variables
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+ '(line-number ((t (:inherit (shadow default) :foreground "color-43"))))
 )
 
 (setq vc-log-show-limit 100)
