@@ -74,9 +74,11 @@
 
 (custom-set-variables
  '(ansi-color-names-vector
-   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
- '(line-number ((t (:inherit (shadow default) :foreground "color-43"))))
-)
+   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"]))
+
+(custom-set-faces
+ '(line-number ((t (:inherit (shadow default) :foreground "#00d7d7"))))
+ '(cursor ((t (:background "slate blue" :foreground "ghost white")))))
 
 (setq vc-log-show-limit 100)
 
@@ -85,7 +87,7 @@
   (custom-set-faces
    '(default ((t (:inherit nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC"
 			   :inverse-video nil :box nil :strike-through nil :overline nil
-			   :underline nil :slant normal :weight normal :height 160
+			   :underline nil :slant normal :weight normal :height 162
 			   :width normal :foundry "outline" :family "Source Code Pro"))))))
 
 (provide 'init-basic)

@@ -1,5 +1,4 @@
 (custom-set-faces
- '(line-number ((t (:inherit (shadow default) :foreground "color-43"))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "#7E3DA7"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "chocolate2"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "#4ef261"))))
