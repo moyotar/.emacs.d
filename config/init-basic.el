@@ -81,4 +81,12 @@
 
 (setq vc-log-show-limit 100)
 
+;; Prefer Source Code Pro
+(when (member "Source Code Pro" (font-family-list))
+  (custom-set-faces
+   '(default ((t (:inherit nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC"
+			   :inverse-video nil :box nil :strike-through nil :overline nil
+			   :underline nil :slant normal :weight normal :height 160
+			   :width normal :foundry "outline" :family "Source Code Pro"))))))
+
 (provide 'init-basic)
