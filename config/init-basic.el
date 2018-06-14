@@ -90,4 +90,6 @@
 			   :underline nil :slant normal :weight normal :height 162
 			   :width normal :foundry "outline" :family "Source Code Pro"))))))
 
+(setq source-directory (expand-file-name "emacs-source" user-emacs-directory))
+
 (provide 'init-basic)
