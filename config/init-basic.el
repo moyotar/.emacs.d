@@ -130,6 +130,9 @@
     (with-current-buffer buffer
       ad-do-it)))
 
+
 (setq read-process-output-max (* 1024 1024))
+
+(add-to-list 'auto-mode-alist '("\\.pto$" . lua-mode))
 
 (provide 'init-basic)
