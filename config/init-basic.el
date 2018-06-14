@@ -21,7 +21,6 @@
 
 ;; 更改光标
 (setq-default cursor-type 'box)
-(set-cursor-color "#A8A8FF")
 
 ;; 快速打开配置文件
 (defun open-init-file()
