@@ -15,6 +15,8 @@
   (if (equal arg '(4))
       (helm-locate-1 '(16) nil nil (thing-at-point 'filename))
     (helm-locate-1 '(4) nil nil (thing-at-point 'filename)))
+  (if (string-match "-p" helm-locate-command)
+      (setq helm-locate-command nil))
   )
 
 (define-key projectile-mode-map (kbd "C-c p f") 'my-projectile-find-file)
