@@ -84,11 +84,23 @@
 
 ;; Prefer Source Code Pro
 (when (member "Source Code Pro" (font-family-list))
-  (custom-set-faces
-   '(default ((t (:inherit nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC"
-			   :inverse-video nil :box nil :strike-through nil :overline nil
-			   :underline nil :slant normal :weight normal :height 162
-			   :width normal :foundry "outline" :family "Source Code Pro"))))))
+  (set-face-attribute
+   'default nil
+   :font (font-spec :family "Source Code Pro"
+                    :weight 'normal
+                    :slant 'normal
+                    :size 16.0)))
+
+(when (equal 'windows-nt system-type)
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font
+     (frame-parameter nil 'font)
+     charset
+     (font-spec :family "NSimSun"
+		:weight 'normal
+		:slant 'normal
+		:size 19.5))))
+
 
 (setq source-directory (expand-file-name "emacs-source" user-emacs-directory))
 
