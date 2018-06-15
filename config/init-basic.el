@@ -104,7 +104,4 @@
 
 (setq source-directory (expand-file-name "emacs-source" user-emacs-directory))
 
-(setq eww-bookmarks '((:url "http://lists.gnu.org/archive/html/emacs-devel/"
-			    :title "emacs-devel Archives" :time "Wed Apr 25 17:36:05 2018")))
-
 (provide 'init-basic)
