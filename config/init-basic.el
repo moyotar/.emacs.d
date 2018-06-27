@@ -92,6 +92,7 @@
                     :size 16.0)))
 
 (when (equal 'windows-nt system-type)
+  (server-start)
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font
      (frame-parameter nil 'font)
