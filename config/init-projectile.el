@@ -1,11 +1,12 @@
+
+(setq projectile-keymap-prefix (kbd "C-c p"))
+
 (require 'projectile)
 (projectile-global-mode)
 (require 'helm-projectile)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 (setq projectile-indexing-method 'alien)
-
-(setq projectile-keymap-prefix (kbd "C-c p"))
 
 (defun my-projectile-find-file (arg)
   (interactive "P")
