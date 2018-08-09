@@ -5,6 +5,8 @@
 (helm-projectile-on)
 (setq projectile-indexing-method 'alien)
 
+(setq projectile-keymap-prefix (kbd "C-c p"))
+
 (defun my-projectile-find-file (arg)
   (interactive "P")
   (when (and (equal system-type 'windows-nt) (projectile-project-p))
