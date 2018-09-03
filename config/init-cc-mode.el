@@ -15,10 +15,6 @@
 
 (require 'cc-mode)
 
-(dolist (key '("(" ")" "{" "}"))
-  (define-key c-mode-base-map (kbd key) nil)
-  )
-
 (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'c++-mode-hook 'my-c-mode-hook)
