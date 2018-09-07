@@ -15,7 +15,8 @@
 
 (require 'cc-mode)
 
-(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+(define-key c-mode-base-map (kbd "RET") 'c-context-line-break)
+
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'c++-mode-hook 'my-c-mode-hook)
 
