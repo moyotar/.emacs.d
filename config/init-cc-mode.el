@@ -10,15 +10,13 @@
         default-tab-width 8)      ;; 默认Tab宽度
   
   (local-set-key (kbd "C-c .") 'ace-mc-add-multiple-cursors)
+  (setq-local sp-escape-quotes-after-insert nil)
 )
 
 (require 'cc-mode)
 
-(dolist (key '("(" ")" "{" "}"))
-  (define-key c-mode-base-map (kbd key) nil)
-  )
+(define-key c-mode-base-map (kbd "RET") 'c-context-line-break)
 
-(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'c++-mode-hook 'my-c-mode-hook)
 
