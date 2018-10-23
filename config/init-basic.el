@@ -111,6 +111,7 @@
 
 (setq source-directory (expand-file-name "emacs-source" user-emacs-directory))
 
+
 (defun my-compile()
   (interactive)
   (let ((command (eval compile-command)))
