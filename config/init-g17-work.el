@@ -15,7 +15,7 @@
   )
 
 (defun g17-exec-cmd(cmd)
-  (interactive "M")
+  (interactive "Mcmd: ")
   (g17-exec-cmd-1 cmd))
 
 (defun g17-update()
