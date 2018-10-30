@@ -105,9 +105,15 @@
 
 (setq source-directory (expand-file-name "emacs-source" user-emacs-directory))
 
-(global-set-key (kbd "<f5>") (lambda ()
-			       (interactive)
-			       (setq-local compilation-read-command nil)
-			       (call-interactively 'compile)))
+(defun my-compile()
+  (interactive)
+  (let ((command (eval compile-command)))
+    (if (or compilation-read-command current-prefix-arg)
+	(setq command (compilation-read-command command)))
+    (compile command t))
+  ;; after first compile, don't need to confirm next time
+  (setq-local compilation-read-command nil))
+
+(global-set-key (kbd "<f5>") 'my-compile)
 
 (provide 'init-basic)
