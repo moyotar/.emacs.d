@@ -77,7 +77,6 @@
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"]))
 
 (custom-set-faces
- '(line-number ((t (:inherit (shadow default) :foreground "#00d7d7"))))
  '(cursor ((t (:background "slate blue" :foreground "ghost white")))))
 
 (setq vc-log-show-limit 100)
