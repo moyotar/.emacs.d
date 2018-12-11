@@ -1,6 +1,9 @@
 (require 'helm)
 (helm-mode 1)
+
 (setq helm-follow-mode-persistent t)
+(setq helm-minibuffer-history-must-match nil)
+
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-x b") 'helm-mini)
 
