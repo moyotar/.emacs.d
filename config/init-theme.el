@@ -1,6 +1,7 @@
 
 (setq zenburn-override-colors-alist
-  '(("zenburn-orange" . "#CD853F")))
+      '(("zenburn-orange" . "#CB3A56")
+	("zenburn-yellow" . "#FFA631")))
 
 (custom-set-variables
   '(custom-safe-themes
