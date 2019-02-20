@@ -96,10 +96,13 @@
     (set-fontset-font
      (frame-parameter nil 'font)
      charset
-     (font-spec :family "NSimSun"
+     (font-spec :family "新宋体"
 		:weight 'normal
 		:slant 'normal
-		:size 19.5))))
+		))
+    )
+  (setq face-font-rescale-alist '(("新宋体" . 1.2)))
+  )
 
 
 (setq source-directory (expand-file-name "emacs-source" user-emacs-directory))
