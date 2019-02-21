@@ -1,0 +1,21 @@
+#+STARTUP: showall
+* welcome to org
+  Welcome, and thanks for trying out org mode
+* About head line 
+  - M-RET :: quick gen head line
+  - M-S-Up/Down :: move head line
+* Emphasis for marker or tag
+  - C-c C-x C-f
+    You can make words *bold*, /italic/, _underlined_, =code=, ~verbatim~, and, if you must, +strike-through+
+* Kind of lists
+  * Unordered lists :: -, +, *
+  * Ordered lists :: Start with a number and a dot.
+* CLOCK
+  C-c C-x C-i && C-c C-x C-o
+  :LOGBOOK:
+  CLOCK: [2019-02-21 Thu 10:13]--[2019-02-21 Thu 10:19] =>  0:06
+  :END:
+
+
+
+
