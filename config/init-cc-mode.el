@@ -9,12 +9,15 @@
   
   (local-set-key (kbd "C-c .") 'ace-mc-add-multiple-cursors)
   (setq-local sp-escape-quotes-after-insert nil)
-  (let ((file-name (buffer-file-name)))
+  (let* ((file-name (buffer-file-name))
+	 (is-windows (equal 'windows-nt system-type))
+	 (exec-suffix (if is-windows ".exe" ".out"))
+	 (os-sep (if is-windows "\\" "/")))
     (if file-name
 	(progn
 	  (setq file-name (file-name-nondirectory file-name))
-	  (let ((out-file (concat (file-name-sans-extension file-name) ".out")))
-	    (setq-local compile-command (format "g++ -std=c++14 %s -o %s && ./%s" file-name out-file out-file)))
+	  (let ((out-file (concat (file-name-sans-extension file-name) exec-suffix)))
+	    (setq-local compile-command (format "g++ -std=c++14 %s -o %s && .%s%s" file-name out-file os-sep out-file)))
 	  )
 	))
 )
