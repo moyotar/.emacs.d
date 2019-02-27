@@ -8,14 +8,126 @@
   - C-c C-x C-f
     You can make words *bold*, /italic/, _underlined_, =code=, ~verbatim~, and, if you must, +strike-through+
 * Kind of lists
-  * Unordered lists :: -, +, *
   * Ordered lists :: Start with a number and a dot.
+  * Unordered lists :: -, +, *
 * CLOCK
   C-c C-x C-i && C-c C-x C-o
+  this's a drawer.
   :LOGBOOK:
   CLOCK: [2019-02-21 Thu 10:13]--[2019-02-21 Thu 10:19] =>  0:06
   :END:
+* Varible: org-structure-template-alist
+  This is a list of abbreviation keys and values.
+* fn
+  - C-c C-x f :: create footnote
+  - C-c C-c :: jump to definition
+* Tables
+  * C-c | (org-table-create-or-convert-from-region)
+  * C-c `     (org-table-edit-field)
+  * C-c +     (org-table-sum)
+  * C-c -     (org-table-insert-hline)
+  * C-c ^     (org-table-sort-lines)
+  |---+-----+--------------------------------+-----+-----|
+  |   |   a | b                              | c   | d   |
+  |   | <r> | <30>                           | <l> | <c> |
+  | / |   < | >                              | <>  | <>  |
+  |---+-----+--------------------------------+-----+-----|
+  |   |  10 | 23                             | 4   | awm |
+  |---+-----+--------------------------------+-----+-----|
+  |   |   5 | 81                             | 8   | sks |
+  |---+-----+--------------------------------+-----+-----|
+  |   |   3 |                                | 23  | 98k |
+  |---+-----+--------------------------------+-----+-----|
+  
+  And, *org-plot* for graph.
+* Hyperlinks
+** Key
+   - C-c C-o :: Open
+   - C-c l :: insert
+   - C-c C-l :: edit
+   #+NAME: link 
+   Format: [[link][description]] or [[link]]
+   The preferred match for a
+   text link is a dedicated target: the same string in double angular
+   brackets, like ‘<<dedicated target>>’.
+** Radio Targets
+   Radio targets are enclosed by triple angular brackets.  For example,
+   a target ‘<<<My Target>>>’ causes each occurrence of ‘my target’ in 
+   normal text to become activated as a link.
+** External links
+   Web site、files、shell command、elisp and so on.
+* Todo Item
+  - C-c C-t :: Rotate todo state
+  - C-c / t :: show todo tree
+  - Variable :: org-agenda-files
+* Tags                                                                 :test:
+  - C-c C-q :: (org-set-tags-command)
+* Properties and columns
+  :PROPERTIES:
+  :Version:  1.0
+  :END:
+* MarkUp
+  #+BEGIN_CENTER
+  Everything should be made as simple as possible, \\
+  but not any simpler
+  #+END_CENTER
+  -----
+  #+CAPTION: 表格
+  #+NAME:   table_data
+  | a | b | c | d |
+  | 1 | 2 | 3 | 4 |
+  -----
+  #+BEGIN_EXAMPLE -n 10
+    emacs is really amazing!
+  #+END_EXAMPLE
+  -----
+** Working with src block
+   A ‘src’ block conforms to this structure:
 
+   #+NAME: <name>
+   #+BEGIN_SRC <language> <switches> <header arguments>
+       <body>
+   #+END_SRC
 
+   -r means remove labels.
+   #+NAME: test
+   #+BEGIN_SRC emacs-lisp -n -r :exports code
+    (save-excursion                  (ref:sc)
+     (goto-char (point-min)))      (ref:jump)
+   #+END_SRC
 
+   In line [[(sc)]] we remember the current position.  [[(jump)][Line (jump)]]
+   jumps to point-min. \alpha
 
+   #+CALL: test()
+
+   #+BEGIN_SRC lua -n -r :exports both
+    local add = function(x, y)
+	    return x + y 
+    end
+    return add(1, 9)
+   #+END_SRC
+
+   #+RESULTS:
+   : 10
+  
+   #+NAME: example-table
+   | 1 | a |
+   | 2 | b |
+   | 3 | c |
+   | 4 | d |
+
+   #+BEGIN_SRC emacs-lisp :var data=example-table[,0]
+       data
+   #+END_SRC
+
+   #+RESULTS:
+   | 1 | 2 | 3 | 4 |
+
+   #+BEGIN_SRC python -n -r :exports both
+     a = range(10)
+     return a
+   #+END_SRC
+
+   #+RESULTS:
+   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
