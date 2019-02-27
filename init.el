@@ -21,7 +21,6 @@
 (require 'init-multiple-cursors)
 (require 'init-yasnippet)
 (require 'init-company)
-(require 'init-ycmd)
 (require 'init-sml)
 (require 'init-dir)
 (require 'init-avy)

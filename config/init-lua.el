@@ -8,7 +8,6 @@
 	  (lambda()
 	    (add-to-list (make-local-variable 'company-backends)
 			 '(company-lua
-			   company-ycmd
 			   company-yasnippet)
 			 )
 	    (setq

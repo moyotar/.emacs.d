@@ -1,8 +1,7 @@
 (add-hook 'python-mode-hook
 	  (lambda()
 	    (make-local-variable 'company-backends)
-	    (setq company-backends '(company-ycmd)
-		  indent-tabs-mode t        ;; 禁止空格替换 Tab
+	    (setq indent-tabs-mode t        ;; 禁止空格替换 Tab
 		  tab-width 8
 		  python-indent-offset 8
 		  )
