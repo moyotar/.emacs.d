@@ -19,3 +19,6 @@ url
 var
 server
 emacs-source
+/styles
+/org-note.html
+/org-note.md

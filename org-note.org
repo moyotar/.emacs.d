@@ -1,4 +1,5 @@
 #+STARTUP: showall
+#+SETUPFILE: d:/org-html-themes/setup/theme-readtheorg-local.setup
 * welcome to org
   Welcome, and thanks for trying out org mode
 * About head line 
