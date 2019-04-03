@@ -118,4 +118,7 @@
 
 (global-set-key (kbd "<f5>") 'my-compile)
 
+(setq aw-dispatch-always t)
+(global-set-key (kbd "M-o") 'ace-window)
+
 (provide 'init-basic)

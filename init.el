@@ -11,8 +11,8 @@
   (add-hook 'after-init-hook
             (lambda () (setq gc-cons-threshold (* 50 1024 1024)))))
 
-(require 'init-basic)
 (require 'init-el-get)
+(require 'init-basic)
 (require 'init-theme)
 (require 'init-cc-mode)
 (require 'init-expand-region)
