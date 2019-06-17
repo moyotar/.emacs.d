@@ -17,6 +17,8 @@
 ;; 关闭启动帮助画面
 (setq inhibit-splash-screen 1)
 
+(setq inhibit-compacting-font-caches t)
+
 (set-face-attribute 'default nil :height 180)
 
 ;; 更改光标
