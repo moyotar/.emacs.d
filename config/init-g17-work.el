@@ -20,7 +20,8 @@
 
 (defun g17-update()
   (interactive)
-  (g17-exec-cmd (format "ls Update(\"%s\")" (file-relative-name (buffer-file-name) (format "%s/logic" (projectile-project-root))))))
+  (let* ((file-name (file-relative-name (buffer-file-name) (format "%s/logic" (projectile-project-root)))))
+    (g17-exec-cmd (format "ls Update(\"%s\") engine.RunCodeInFightThread(\"Update(\\\"%s\\\")\")" file-name file-name))))
 
 (provide 'init-g17-work)
 
