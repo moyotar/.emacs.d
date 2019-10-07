@@ -123,4 +123,9 @@
 (setq aw-dispatch-always t)
 (global-set-key (kbd "M-o") 'ace-window)
 
+(defadvice text-scale-increase (around all-buffers (arg) activate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      ad-do-it)))
+
 (provide 'init-basic)
