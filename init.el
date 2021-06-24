@@ -6,10 +6,7 @@
 ;;----------------------------------------------------------------------------
 ;; Adjust garbage collection thresholds during startup, and thereafter
 ;;----------------------------------------------------------------------------
-(let ((init-gc-cons-threshold (* 128 1024 1024)))
-  (setq gc-cons-threshold init-gc-cons-threshold)
-  (add-hook 'after-init-hook
-            (lambda () (setq gc-cons-threshold (* 50 1024 1024)))))
+(setq gc-cons-threshold (* 100 1024 1024))
 
 (require 'init-el-get)
 (require 'init-basic)

@@ -129,4 +129,6 @@
     (with-current-buffer buffer
       ad-do-it)))
 
+(setq read-process-output-max (* 1024 1024))
+
 (provide 'init-basic)
