@@ -154,17 +154,13 @@
   :bind
   (("C-x C-f" . helm-find-files)
    ("C-x b" . helm-mini)
+   ("C-c s" . helm-occur)
    )
   
   :config
   (helm-mode 1)
   (setq helm-follow-mode-persistent t)
   (setq helm-minibuffer-history-must-match nil)
-  )
-
-(use-package helm-ag
-  :bind
-  ("C-c s" . helm-ag-this-file)
   )
 
 (use-package helm-smex
