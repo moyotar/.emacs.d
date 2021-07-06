@@ -54,11 +54,11 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(setq buffer-file-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-(prefer-coding-system 'gbk)
-(define-coding-system-alias 'UTF-8 'utf-8)
 (define-coding-system-alias 'GB18030 'gb18030)
+(prefer-coding-system 'gbk)
+(setq buffer-file-coding-system 'utf-8)
+(define-coding-system-alias 'UTF-8 'utf-8)
+(prefer-coding-system 'utf-8)
 (setq file-name-coding-system 'UTF-8-unix)
 (setq load-prefer-newer t)
 
