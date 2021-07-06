@@ -738,6 +738,11 @@ OPTIONS explicit command line arguments to ag"
         kubernetes-redraw-frequency 3600))
 
 
+(use-package init-g17-work
+  :commands (g17-update g17-exec-cmd)
+  :defer (use-package-defer-time)
+  )
+
 (provide 'init)
 ;;; init.el ends here
 

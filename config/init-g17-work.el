@@ -1,4 +1,4 @@
-;; g17 work config
+;; g17 work config  -*- lexical-binding: t; -*-
 
 (add-to-list 'auto-mode-alist '("\\.pto$" . lua-mode))
 
