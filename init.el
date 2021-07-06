@@ -679,6 +679,11 @@ OPTIONS explicit command line arguments to ag"
 
   (define-key gptel-mode-map (kbd "C-c r") #'gptel-toggle-deepseek-model))
 
+(use-package init-g17-work
+  :commands (g17-update g17-exec-cmd)
+  :defer (use-package-defer-time)
+  )
+
 (provide 'init)
 ;;; init.el ends here
 
