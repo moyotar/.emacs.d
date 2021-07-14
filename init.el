@@ -408,10 +408,9 @@
     )
   (add-hook 'lua-mode-hook
 	    (lambda()
-	      (add-to-list (make-local-variable 'company-backends)
-			   '(company-lua
-			     company-yasnippet)
-			   )
+	      (setq-local company-backends
+			   '((company-lua
+			     company-yasnippet)))
 	      (setq
 	       tab-width 8
 	       indent-tabs-mode t
@@ -478,7 +477,6 @@
   :config
   (add-hook 'python-mode-hook
 	    (lambda()
-	      (make-local-variable 'company-backends)
 	      (setq indent-tabs-mode t        ;; 禁止空格替换 Tab
 		    tab-width 8
 		    python-indent-offset 8
