@@ -232,6 +232,7 @@
   (("M-o" . 'ace-window))
   :init
   (setq aw-dispatch-always t)
+  :defer t
   )
 
 (use-package zenburn-theme
