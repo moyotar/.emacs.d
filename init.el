@@ -417,6 +417,8 @@
 	       lua-indent-level 8
 	       )
 	      (hs-minor-mode 1)))
+  
+  :defer (use-package-defer-time)
   )
 
 (use-package rainbow-delimiters
