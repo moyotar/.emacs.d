@@ -72,7 +72,7 @@
     (with-current-buffer buffer
       ad-do-it)))
 
-(setq read-process-output-max (* 1024 1024))
+(setq read-process-output-max (* 3 1024 1024))
 
 ;; Prefer Source Code Pro
 (when (member "Source Code Pro" (font-family-list))
@@ -541,11 +541,20 @@
 (use-package lsp-mode
   :hook
   ((c-mode . lsp-deferred)
-  (c++-mode . lsp-deferred))
+   (c++-mode . lsp-deferred))
   :commands
   (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
+  :custom
+  (lsp-file-watch-threshold nil)
+  (lsp-enable-symbol-highlighting nil)
+  (lsp-eldoc-hook nil)
+  :config
+  (add-hook 'lsp-mode-hook (lambda ()
+			     (if (bound-and-true-p lsp-mode)
+				 (if (bound-and-true-p helm-gtags-mode)
+				     (helm-gtags-mode -1)))))
   )
 
 (provide 'init)
