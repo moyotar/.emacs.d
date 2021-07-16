@@ -22,3 +22,9 @@ emacs-source
 /styles
 /org-note.html
 /org-note.md
+.lsp*
+eln-cache
+\#*\#
+projects
+network-security.data
+transient
