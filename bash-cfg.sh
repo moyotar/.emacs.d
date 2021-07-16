@@ -1,10 +1,12 @@
 # my bash config
 
+export PS1="\w\$ "
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export TERM=xterm-256color
 export LS_COLORS="$LS_COLORS:di=00;36:"
 alias ls='ls --color=auto'
-PS1="\w\$ "
 
 # 根据文件名后缀进行解压,case的运用.
 function extract() {
