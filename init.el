@@ -561,7 +561,7 @@
 (use-package rmsbolt
   :init
   (custom-set-faces
-   '(rmsbolt-current-line-face ((t (:background "color-64" :weight bold)))))
+   '(rmsbolt-current-line-face ((t (:background "#5F5F87870000" :weight bold)))))
   :defer t)
 
 (provide 'init)
