@@ -56,7 +56,6 @@
 
 (define-coding-system-alias 'GB18030 'gb18030)
 (prefer-coding-system 'gbk)
-(setq buffer-file-coding-system 'utf-8)
 (define-coding-system-alias 'UTF-8 'utf-8)
 (prefer-coding-system 'utf-8)
 (setq file-name-coding-system 'UTF-8-unix)
@@ -72,7 +71,7 @@
     (with-current-buffer buffer
       ad-do-it)))
 
-(setq read-process-output-max (* 3 1024 1024))
+(setq read-process-output-max (* 1024 1024))
 
 ;; Prefer Source Code Pro
 (when (member "Source Code Pro" (font-family-list))
@@ -117,12 +116,14 @@
       (url-retrieve-synchronously
        "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
     (goto-char (point-max))
-        (eval-print-last-sexp)))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path (expand-file-name "el-get-recipes" user-emacs-directory))
 
 ;; Note: Need to update my-packages's value after installed a new package every time.
 ;; ielm: `(setq my-packages ',(mapcar #'el-get-as-symbol (el-get-list-package-names-with-status "installed")))
 (setq my-packages
-      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora auto-highlight-symbol avy cl-lib color-theme-zenburn company-lua company-mode dash deferred el-get emacs-async epl expand-region f flycheck fold-this ghub graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex ht htmlize hydra json-mode json-reformat json-snatcher let-alist lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup projectile rainbow-delimiters request rich-minority s seq smart-mode-line smartparens smex spinner transient treepy use-package vlfi with-editor yasnippet yasnippet-snippets))
+      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora auto-highlight-symbol avy cl-lib color-theme-zenburn company-lua company-mode dash deferred el-get emacs-async epl expand-region f flycheck fold-this ghub graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex helm-xref ht htmlize hydra json-mode json-reformat json-snatcher let-alist lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner transient treepy use-package vlfi with-editor yasnippet yasnippet-snippets))
 
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
@@ -436,7 +437,7 @@
    '(rainbow-delimiters-depth-9-face ((t (:foreground "#F5A47A")))))
   :hook
   (prog-mode . rainbow-delimiters-mode)
-  :defer (use-package-defer-time)
+  :defer t
   )
 
 (use-package auto-highlight-symbol
@@ -550,12 +551,18 @@
   (lsp-file-watch-threshold nil)
   (lsp-enable-symbol-highlighting nil)
   (lsp-eldoc-hook nil)
+  (lsp-restart 'ignore)
   :config
   (add-hook 'lsp-mode-hook (lambda ()
 			     (if (bound-and-true-p lsp-mode)
 				 (if (bound-and-true-p helm-gtags-mode)
-				     (helm-gtags-mode -1)))))
-  )
+				     (helm-gtags-mode -1))))))
+
+(use-package rmsbolt
+  :init
+  (custom-set-faces
+   '(rmsbolt-current-line-face ((t (:background "color-64" :weight bold)))))
+  :defer t)
 
 (provide 'init)
 ;;; init.el ends here

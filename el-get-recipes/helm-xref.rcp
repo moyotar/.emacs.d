@@ -1,0 +1,5 @@
+(:name helm-xref
+       :description "Helm interface for xref results"
+       :type github
+       :pkgname "brotzeit/helm-xref"
+       :depends (helm))
