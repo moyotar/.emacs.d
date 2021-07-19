@@ -1,0 +1,5 @@
+(:name rmsbolt
+       :description "A supercharged godbolt embedded in Emacs"
+       :type git
+       :url "https://gitlab.com/jgkamat/rmsbolt"
+       :depends cl-lib)
