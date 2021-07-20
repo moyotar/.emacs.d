@@ -1,0 +1,4 @@
+(:name autothemer
+       :description "Gruvbox is a retro groove color scheme for Emacs. Port of the Vim version."
+       :type github
+       :pkgname "jasonm23/autothemer")

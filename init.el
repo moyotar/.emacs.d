@@ -123,7 +123,7 @@
 ;; Note: Need to update my-packages's value after installed a new package every time.
 ;; ielm: `(setq my-packages ',(mapcar #'el-get-as-symbol (el-get-list-package-names-with-status "installed")))
 (setq my-packages
-      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora auto-highlight-symbol avy cl-lib color-theme-zenburn company-lua company-mode dash deferred el-get emacs-async epl expand-region f flycheck fold-this ghub graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex helm-xref ht htmlize hydra json-mode json-reformat json-snatcher let-alist lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner transient treepy use-package vlfi with-editor yasnippet yasnippet-snippets))
+      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora auto-highlight-symbol autothemer avy cl-lib color-theme-zenburn company-lua company-mode dash deferred el-get emacs-async emacs-theme-gruvbox epl expand-region f flycheck fold-this ghub graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex helm-xref ht htmlize hydra json-mode json-reformat json-snatcher let-alist lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner transient treepy use-package vlfi with-editor yasnippet yasnippet-snippets))
 
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
@@ -236,20 +236,24 @@
   :defer t
   )
 
-(use-package zenburn-theme
-  :init
-  (setq zenburn-override-colors-alist
-      '(("zenburn-orange" . "#21A675")
-	("zenburn-yellow" . "#E29C45")))
+;; (use-package zenburn-theme
+;;   :init
+;;   (setq zenburn-override-colors-alist
+;;       '(("zenburn-orange" . "#21A675")
+;; 	("zenburn-yellow" . "#E29C45")))
+;;   :config
+;;   (load-theme 'zenburn t)
+;;   )
+
+(use-package gruvbox-theme
   :config
-  (load-theme 'zenburn t)
-  )
+  (load-theme 'gruvbox-dark-soft t))
 
 (use-package smart-mode-line
   :config
   (setq sml/no-confirm-load-theme t)
   (setq sml/theme 'dark) ;; or 'dark
-  (add-hook 'after-init-hook #'sml/setup)
+  (add-hook 'after-init-hook (lambda () (sml/setup) (load-theme 'smart-mode-line-powerline t)))
   )
 
 (use-package cc-mode
