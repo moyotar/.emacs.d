@@ -280,12 +280,12 @@
       ))
   
   (defun my-c-mode-hook ()
-    (add-hook 'post-self-insert-hook 'hook-c/c++-insert-function)
+    (add-hook 'post-self-insert-hook 'hook-c/c++-insert-function 0 t)
 
     (c-set-offset 'substatement-open 0)
-    (setq	c-basic-offset 8          ;; 基本缩进宽度
-		indent-tabs-mode t        ;; 禁止空格替换Tab
-		default-tab-width 8)      ;; 默认Tab宽度
+    (setq c-basic-offset 8          ;; 基本缩进宽度
+	  indent-tabs-mode t        ;; 禁止空格替换Tab
+	  default-tab-width 8)      ;; 默认Tab宽度
     
     (local-set-key (kbd "C-c .") 'ace-mc-add-multiple-cursors)
     (setq-local sp-escape-quotes-after-insert nil)
@@ -297,7 +297,7 @@
 	  (progn
 	    (setq file-name (file-name-nondirectory file-name))
 	    (let ((out-file (concat (file-name-sans-extension file-name) exec-suffix)))
-	      (setq-local compile-command (format "g++ -std=c++14 %s -o %s && .%s%s" file-name out-file os-sep out-file)))
+	      (setq-local compile-command (format "g++ -std=c++17 %s -o %s && .%s%s" file-name out-file os-sep out-file)))
 	    )
 	))
     )
