@@ -35,10 +35,12 @@
 
 (setq initial-frame-alist (quote ((fullscreen . maximized))))
 
+(menu-bar-mode -1)
 (if (display-graphic-p)
     (progn
       (tool-bar-mode -1)
-      (scroll-all-mode -1)))
+      (scroll-all-mode -1)
+      (toggle-scroll-bar -1)))
 
 (add-hook 'horizontal-scroll-bar-mode-hook (lambda ()  (setq horizontal-scroll-bar nil)))
 
