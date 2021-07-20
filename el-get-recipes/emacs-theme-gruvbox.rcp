@@ -1,0 +1,5 @@
+(:name emacs-theme-gruvbox
+       :description "Gruvbox is a retro groove color scheme for Emacs. Port of the Vim version."
+       :type github
+       :pkgname "greduan/emacs-theme-gruvbox"
+       :depends autothemer)
