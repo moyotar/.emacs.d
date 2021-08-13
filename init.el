@@ -132,6 +132,14 @@
 
 (el-get 'sync my-packages)
 
+(when (equal system-type 'darwin)
+  ;;; I prefer cmd key for meta
+  (setq mac-option-key-is-meta nil
+	mac-command-key-is-meta t
+	mac-command-modifier 'meta
+	mac-option-modifier 'none)
+  )
+
 (eval-when-compile
   (require 'use-package))
 
