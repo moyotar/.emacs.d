@@ -19,8 +19,6 @@
 
 (setq inhibit-compacting-font-caches t)
 
-(set-face-attribute 'default nil :height 180)
-
 ;; 更改光标
 (setq-default cursor-type 'box)
 
@@ -75,17 +73,30 @@
 
 (setq read-process-output-max (* 1024 1024))
 
-;; Prefer Source Code Pro
-(when (member "Source Code Pro" (font-family-list))
+(cond
+ ((equal 'darwin system-type)
   (set-face-attribute
    'default nil
-   :font (font-spec :family "Source Code Pro"
-                    :weight 'normal
-                    :slant 'normal
-                    :size 16.0)))
+   :font (font-spec :name "Monaco"
+                    :size 18.0))
 
-(when (equal 'windows-nt system-type)
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font
+     (frame-parameter nil 'font)
+     charset
+     (font-spec :name "Hiragino Sans GB")))
+
+  (setq face-font-rescale-alist '(("Hiragino Sans GB" . 1.2))))
+
+ ((equal 'windows-nt system-type)
   (server-start)
+  (when (member "Source Code Pro" (font-family-list))
+    (set-face-attribute
+     'default nil
+     :font (fontspec :family "Source Code Pro"
+                     :weight 'normal
+                     :slant 'normal
+                     :size 16.0)))
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font
      (frame-parameter nil 'font)
@@ -95,8 +106,8 @@
 		:slant 'normal
 		))
     )
-  (setq face-font-rescale-alist '(("新宋体" . 1.2)))
-  )
+  (setq face-font-rescale-alist '(("新宋体" . 1.2))))
+ )
 
 (setq source-directory (expand-file-name "emacs-source" user-emacs-directory))
 
@@ -130,15 +141,17 @@
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
 
-(el-get 'sync my-packages)
-
 (when (equal system-type 'darwin)
   ;;; I prefer cmd key for meta
-  (setq mac-option-key-is-meta nil
-	mac-command-key-is-meta t
-	mac-command-modifier 'meta
-	mac-option-modifier 'none)
+    (setq mac-option-key-is-meta nil
+	  mac-command-key-is-meta t
+	  mac-command-modifier 'meta
+	  mac-option-modifier 'none
+	  my-packages (append my-packages '(exec-path-from-shell))
+	  )
   )
+
+(el-get 'sync my-packages)
 
 (eval-when-compile
   (require 'use-package))
@@ -220,6 +233,14 @@
   (show-paren-mode)
   (setq show-paren-style 'parenthesis)
   :defer (use-package-defer-time)
+  )
+
+(when (equal system-type 'darwin)
+  (use-package exec-path-from-shell
+    :config
+    (exec-path-from-shell-initialize)
+    :defer (use-package-defer-time)
+    )
   )
 
 (use-package desktop
@@ -473,7 +494,9 @@
 	    (lambda ()
 	      (setq sh-basic-offset 8 sh-indentation 8)
 	      (shell-dirtrack-mode 0) ;stop the usual shell-dirtrack mode
-	      (set-variable 'dirtrack-list '("^\\(.*@.*:\\)?\\(.*\\)[$#] $" 2 nil)) ; pattern depends on $PS1
+	      ;; pattern depends on $PS1
+	      (let ((pattern (if (equal 'darwin system-type) "^\\(.*\\)\\[\\(.*\\)\\]" "^\\(.*@.*:\\)?\\(.*\\)[$#] $")))
+		(set-variable 'dirtrack-list `(,pattern 2 nil)))
 	      (dirtrack-mode))
 	    )
   
@@ -489,6 +512,8 @@
 		    python-indent-offset 8
 		    )
 	      (hs-minor-mode 1)
+	      (if (executable-find "python3")
+		  (setq python-shell-interpreter "python3"))
 	      ))
   
   :defer (use-package-defer-time)
