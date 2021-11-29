@@ -580,6 +580,8 @@
   (lsp-enable-symbol-highlighting nil)
   (lsp-eldoc-hook nil)
   (lsp-restart 'ignore)
+  (lsp-enable-on-type-formatting nil)
+  (lsp-enable-indentation nil)
   :config
   (add-hook 'lsp-mode-hook (lambda ()
 			     (if (bound-and-true-p lsp-mode)
