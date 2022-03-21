@@ -332,7 +332,7 @@
 	  (progn
 	    (setq file-name (file-name-nondirectory file-name))
 	    (let ((out-file (concat (file-name-sans-extension file-name) exec-suffix)))
-	      (setq-local compile-command (format "g++ -std=c++17 %s -o %s && .%s%s" file-name out-file os-sep out-file)))
+	      (setq-local compile-command (format "g++ -std=c++17 '%s' -o '%s' && .%s'%s'" file-name out-file os-sep out-file)))
 	    )
 	))
     )
