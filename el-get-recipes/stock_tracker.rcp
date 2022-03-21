@@ -1,0 +1,5 @@
+(:name stock-tracker
+       :description "Track stock price in Emacs"
+       :type github
+       :pkgname "beacoder/stock-tracker"
+)
