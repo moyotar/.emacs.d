@@ -136,7 +136,7 @@
 ;; Note: Need to update my-packages's value after installed a new package every time.
 ;; ielm: `(setq my-packages ',(mapcar #'el-get-as-symbol (el-get-list-package-names-with-status "installed")))
 (setq my-packages
-      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora auto-highlight-symbol autothemer avy cl-lib color-theme-zenburn company-lua company-mode dash deferred el-get emacs-async emacs-theme-gruvbox epl expand-region f flycheck fold-this ghub graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex helm-xref ht htmlize hydra json-mode json-reformat json-snatcher let-alist lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner transient treepy use-package vlfi with-editor yasnippet yasnippet-snippets))
+      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode dash deferred el-get emacs-async emacs-theme-gruvbox epl expand-region f flycheck fold-this ghub graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner transient treepy use-package vlfi with-editor yasnippet yasnippet-snippets))
 
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
@@ -464,21 +464,20 @@
   :defer t
   )
 
-(use-package auto-highlight-symbol
-  :init 
-  (setq auto-highlight-symbol-mode-map
+(use-package highlight-symbol
+  :hook
+  (prog-mode . highlight-symbol-mode)
+  (prog-mode . highlight-symbol-nav-mode)
+  :init
+  (setq highlight-symbol-nav-mode-map
 	(let ((map (make-sparse-keymap)))
-	  (define-key map (kbd "C-M-r"    ) 'ahs-backward)
-	  (define-key map (kbd "C-M-s"	) 'ahs-forward)
-	  (define-key map (kbd "M--"      ) 'ahs-back-to-start)
-	  (define-key map (kbd "C-x C-'"  ) 'ahs-change-range)
-	  (define-key map (kbd "C-x C-a"  ) 'ahs-edit-mode)
+	  (define-key map (kbd "C-M-s") 'highlight-symbol-next)
+	  (define-key map (kbd "C-M-r") 'highlight-symbol-prev)
 	  map))
   :config
-  (setq ahs-idle-interval 0.5)
-  (setq ahs-default-range 'ahs-range-display)
-  (global-auto-highlight-symbol-mode)
-  :defer (use-package-defer-time)
+  (setq highlight-symbol-idle-delay 0.5)
+  (setq highlight-symbol-on-navigation-p t)
+  :defer t
   )
 
 (use-package shell
