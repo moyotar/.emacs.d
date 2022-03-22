@@ -61,6 +61,8 @@
 (setq file-name-coding-system 'UTF-8-unix)
 (setq load-prefer-newer t)
 
+(setq lsp-use-plists t)
+
 ;; close backup
 (setq make-backup-files nil)
 
