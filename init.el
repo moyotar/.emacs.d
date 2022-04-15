@@ -280,7 +280,14 @@
 
 (use-package gruvbox-theme
   :config
-  (load-theme 'gruvbox-dark-soft t))
+  (load-theme 'gruvbox-dark-soft t)
+  (custom-set-faces
+   '(diff-added ((t (:extend t :background "#335533" :foreground "#7F9F7F"))))
+   '(diff-refine-added ((t (:background "#338833" :foreground "#BFEBBF"))))
+   '(diff-refine-removed ((t (:background "#883333" :foreground "#CC9393"))))
+   '(diff-removed ((t (:extend t :background "#553333" :foreground "#AC7373"))))
+   )
+  )
 
 (use-package smart-mode-line
   :config
