@@ -583,6 +583,8 @@
   (lsp lsp-deferred)
   :init
   (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-clients-clangd-args
+	'("--header-insertion=never"))
   :custom
   (lsp-file-watch-threshold nil)
   (lsp-enable-symbol-highlighting nil)
