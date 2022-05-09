@@ -593,6 +593,7 @@
   (lsp-enable-on-type-formatting nil)
   (lsp-enable-indentation nil)
   (lsp-signature-auto-activate nil)
+  (lsp-modeline-code-actions-enable nil)
   :config
   (add-hook 'lsp-mode-hook (lambda ()
 			     (if (bound-and-true-p lsp-mode)
