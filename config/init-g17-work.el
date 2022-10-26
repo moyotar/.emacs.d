@@ -8,10 +8,11 @@
 	 (port nil))
     (if (file-exists-p conf-file-path)
 	(progn
-	  (setq port-conf (shell-command-to-string (format "grep '^DebugPort' %s" conf-file-path)))
+	  (setq port-conf (shell-command-to-string (format "grep -E '\s*\"DebugPort\"\s*:' %s" conf-file-path)))
 	  (setq suffix "")
 	  (if (string-empty-p port-conf)
-	      (setq port-conf (shell-command-to-string (format "grep '^server_id' %s" conf-file-path))
+	      (setq port-conf
+		    (shell-command-to-string (format "grep -E '\s*\"server_id\"\s*:' %s" conf-file-path))
 		    suffix "0"))
 	  (setq port (shell-command-to-string (format "echo '%s' | grep -Eoh '[0-9]+' | tr -d '\n'" port-conf)))
 	  (message (shell-command-to-string (format "echo '%s' | nc -q 1 127.0.0.1 %s%s" cmd port suffix)))
