@@ -461,8 +461,7 @@
 	       tab-width 8
 	       indent-tabs-mode t
 	       lua-indent-level 8
-	       )
-	      (hs-minor-mode 1)))
+	       )))
   
   :defer (use-package-defer-time)
   )
@@ -519,7 +518,6 @@
 		    tab-width 8
 		    python-indent-offset 8
 		    )
-	      (hs-minor-mode 1)
 	      (if (executable-find "python3")
 		  (setq python-shell-interpreter "python3"))
 	      ))
