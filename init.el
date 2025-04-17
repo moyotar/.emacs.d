@@ -604,6 +604,20 @@
    '(rmsbolt-current-line-face ((t (:background "#5F5F87870000" :weight bold)))))
   :defer t)
 
+
+(use-package copilot
+  :defer (use-package-defer-time)
+  :hook (prog-mode . copilot-mode)
+  :config
+  ;; 配置补全接受方式
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+  
+  ;; 其他自定义设置
+  (setq copilot-max-char -1)
+  ;; (setq copilot-enable-predicates '(copilot--buffer-changed)
+  )
+
 (provide 'init)
 ;;; init.el ends here
 
