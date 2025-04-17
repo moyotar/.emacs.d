@@ -183,6 +183,7 @@
    )
   
   :config
+  (define-key helm-map (kbd "C-r") 'helm-minibuffer-history)
   (helm-mode 1)
   (setq helm-follow-mode-persistent t)
   (setq helm-minibuffer-history-must-match nil)
