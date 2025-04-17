@@ -138,8 +138,7 @@
 ;; Note: Need to update my-packages's value after installed a new package every time.
 ;; ielm: `(setq my-packages ',(mapcar #'el-get-as-symbol (el-get-list-package-names-with-status "installed")))
 (setq my-packages
-      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode compat dash deferred dockerfile-mode el-get emacs-async emacs-theme-gruvbox epl exec-path-from-shell expand-region f flycheck fold-this ghub go-mode graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner transient treepy use-package vlfi with-editor yaml-mode yasnippet yasnippet-snippets))
-
+      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode compat copilot dash deferred dockerfile-mode editorconfig el-get emacs-aio emacs-async emacs-theme-gruvbox epl exec-path-from-shell expand-region f flycheck fold-this ghub go-mode gptel graphql helm helm-ag helm-gtags helm-projectile helm-rg helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist llama lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner tablist transient treepy use-package vlfi wfnames with-editor yaml yaml-imenu yaml-mode yaml-pro yasnippet yasnippet-snippets))
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
 
@@ -611,12 +610,37 @@
   :config
   ;; 配置补全接受方式
   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "C-M-f") 'copilot-accept-completion-by-word)
+  (define-key copilot-completion-map (kbd "C-M-l") 'copilot-accept-completion-by-line)
   
   ;; 其他自定义设置
   (setq copilot-max-char -1)
   ;; (setq copilot-enable-predicates '(copilot--buffer-changed)
   )
+
+(use-package gptel
+  :defer (use-package-defer-time)
+  :config
+  ;; 设置默认模型
+  (setq gptel-model 'deepseek-chat
+      gptel-backend
+      (gptel-make-deepseek "DeepSeek"
+        :stream t
+	;; ~/.authinfo
+	;; machine api.deepseek.com login apikey password your_api_key
+        :key (auth-source-pick-first-password
+              :host "api.deepseek.com"
+              :user "apikey")))
+  
+  (defun gptel-toggle-deepseek-model ()
+    (interactive)
+    (setq gptel-model
+          (if (eq gptel-model 'deepseek-chat)
+              'deepseek-reasoner
+            'deepseek-chat))
+    (message "🔄 Deepseek model switched to %s" gptel-model))
+
+  (define-key gptel-mode-map (kbd "C-c r") #'gptel-toggle-deepseek-model))
 
 (provide 'init)
 ;;; init.el ends here
