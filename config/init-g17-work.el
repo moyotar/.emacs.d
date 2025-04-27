@@ -21,7 +21,9 @@
 
 (defun g17-exec-cmd(cmd)
   (interactive "Mcmd: ")
-  (g17-exec-cmd-1 cmd))
+  (let ((command (format "ls return JSON.encode({%s})" cmd)))
+    (message "执行命令: %s" command)
+    (g17-exec-cmd-1 command)))
 
 (defun g17-update()
   (interactive)
@@ -68,9 +70,11 @@
       (unless file-path (error "文件未在项目 logic 目录中"))
 
       ;; 读取用户输入
-      (let* ((input-str (read-string (format "请输入 %s 参数%s（用逗号隔开）: " 
+      (let* ((input-str (if (> arg-count 0)
+			    (read-string (format "请输入 %s 参数%s（用逗号隔开）: " 
                                              (if variadic "至少" "") 
-                                             arg-count)))
+                                             arg-count))
+			  ""))
              (args (call-this-split-args input-str)))
 
         ;; ;; 确保输入参数数量匹配（若无变长参数，参数数量必须一致）
