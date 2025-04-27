@@ -610,10 +610,9 @@
   :hook (prog-mode . copilot-mode)
   :config
   ;; 配置补全接受方式
-  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "C-M-f") 'copilot-accept-completion-by-word)
-  (define-key copilot-completion-map (kbd "C-M-l") 'copilot-accept-completion-by-line)
+  (define-key copilot-completion-map (kbd "C-M-f") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "M-n") 'copilot-accept-completion-by-word)
+  (define-key copilot-completion-map (kbd "M-l") 'copilot-accept-completion-by-line)
   (define-key copilot-completion-map (kbd "C-M-n") 'copilot-next-completion)
   (define-key copilot-completion-map (kbd "C-M-p") 'copilot-previous-completion)
 
