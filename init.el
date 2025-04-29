@@ -225,8 +225,42 @@
   :config
   (setq projectile-completion-system 'helm)
   (helm-projectile-on)
-  
+  (defun helm-projectile-ag-rg (&optional options)
+    "Helm version of `projectile-ag'.
+OPTIONS explicit command line arguments to ag"
+    (interactive (if current-prefix-arg (list (helm-read-string "option: " "" 'helm-ag--extra-options-history))))
+    (if (require 'helm-ag nil t)
+        (if (projectile-project-p)
+	    (let* ((ignored (when (helm-projectile--projectile-ignore-strategy)
+			      (mapconcat (lambda (i)
+                                           (format "-g !%s" i))
+                                         (append (helm-projectile--ignored-files)
+						 (helm-projectile--ignored-directories)
+                                                 (cadr (projectile-parse-dirconfig-file)))
+                                         " ")))
+		   (helm-ag-base-command (concat helm-ag-base-command
+                                                 (when ignored (concat " " ignored))
+                                                 " " options))
+		   (current-prefix-arg nil))
+	      (helm-do-ag (projectile-project-root)
+			  (car (projectile-parse-dirconfig-file))))
+	  (error "You're not in a project"))
+      (when (yes-or-no-p "`helm-ag' is not installed. Install? ")
+	(condition-case nil
+            (progn
+              (package-install 'helm-ag)
+              (helm-projectile-ag options))
+          (error (error "`helm-ag' is not available.  Is MELPA in your `package-archives'?"))))))
+  (define-key projectile-mode-map (kbd "C-c p s s") 'helm-projectile-ag-rg)
   :defer (use-package-defer-time)
+  )
+
+(use-package helm-ag
+  :defer t
+  :config
+  (custom-set-variables
+ '(helm-ag-base-command "rg --no-heading --line-number --color never")
+ `(helm-ag-success-exit-status '(0 2)))
   )
 
 ;; 括号匹配
