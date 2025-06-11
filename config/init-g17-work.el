@@ -29,8 +29,8 @@
   (interactive)
   (let* ((file-name (file-relative-name (buffer-file-name) (format "%s/logic" (projectile-project-root)))))
     (if current-prefix-arg
-	(g17-exec-cmd (format "ls Update(\"%s\") engine.RunCodeInFightThread(\"Update(\\\"%s\\\")\")" file-name file-name))
-      (g17-exec-cmd (format "ls Update(\"%s\")" file-name)))))
+	(g17-exec-cmd-1 (format "ls Update(\"%s\") engine.RunCodeInFightThread(\"Update(\\\"%s\\\")\")" file-name file-name))
+      (g17-exec-cmd-1 (format "ls Update(\"%s\")" file-name)))))
 
 (defun call-this-split-args (input-str)
   "解析用户输入的参数，支持 Lua 格式字符串（逗号分隔但不拆分字符串内的逗号）"
@@ -107,6 +107,10 @@
   (let ((command (format "ls CoRun(function() print(JSON.encode({%s})) end)" (call-this-generate-command))))
     (message "执行命令: %s" command)
     (g17-exec-cmd-1 command)))
+
+(defun g17-user-login()
+  (interactive)
+  (g17-exec-cmd-1 (format "ls CoRun(TEST_CLIENT.CoGetTestUsers, HostId, 10)")))
 
 
 (provide 'init-g17-work)
