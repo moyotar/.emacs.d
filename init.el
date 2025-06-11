@@ -259,7 +259,7 @@ OPTIONS explicit command line arguments to ag"
   :defer t
   :config
   (custom-set-variables
- '(helm-ag-base-command "rg --no-heading --line-number --color never")
+ '(helm-ag-base-command "rg -S --no-heading --line-number --color never")
  `(helm-ag-success-exit-status '(0 2)))
   )
 
