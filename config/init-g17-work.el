@@ -2,22 +2,30 @@
 
 (add-to-list 'auto-mode-alist '("\\.pto$" . lua-mode))
 
+(defvar g17-command-history nil
+  "记录执行过的 G17 命令历史")
+
 (defun g17-exec-cmd-1(oricmd)
   (let* ((root (projectile-project-root))
-	 (conf-file-path (expand-file-name "engine/etc/g17.conf" root))
-	 (port nil)
-	 (cmd (replace-regexp-in-string "\\bself\\b" "USERTBL.UserTbl[next(USERTBL.UserTbl)]" oricmd)))
-    (if (file-exists-p conf-file-path)
-	(progn
-	  (setq port-conf (shell-command-to-string (format "grep -E '\s*\"DebugPort\"\s*:' %s | head -n 1" conf-file-path)))
-	  (setq suffix "")
-	  (if (string-empty-p port-conf)
-	      (setq port-conf
-		    (shell-command-to-string (format "grep -E '\s*\"server_id\"\s*:' %s | head -n 1" conf-file-path))
-		    suffix "0"))
-	  (setq port (shell-command-to-string (format "echo '%s' | grep -Eoh '[0-9]+' | tr -d '\n'" port-conf)))
-	  (message (shell-command-to-string (format "echo '%s' | nc -w 2 127.0.0.1 %s%s" cmd port suffix)))
-	  ))))
+         (conf-file-path (expand-file-name "engine/etc/g17.conf" root))
+         (port nil)
+         (cmd (replace-regexp-in-string "\\bself\\b" "USERTBL.UserTbl[next(USERTBL.UserTbl)]" oricmd)))
+    (if (numberp current-prefix-arg)
+        (setq port (* current-prefix-arg 10))
+      (if (file-exists-p conf-file-path)
+          (progn
+            (setq port-conf (shell-command-to-string (format "grep -E '\s*\"DebugPort\"\s*:' %s | head -n 1" conf-file-path)))
+            (setq suffix "")
+            (if (string-empty-p port-conf)
+                (setq port-conf
+                      (shell-command-to-string (format "grep -E '\s*\"server_id\"\s*:' %s | head -n 1" conf-file-path))
+                      suffix "0"))
+            (setq port (shell-command-to-string (format "echo '%s' | grep -Eoh '[0-9]+' | tr -d '\n'" port-conf))))))
+    (message (shell-command-to-string (format "echo '%s' | nc -w 2 127.0.0.1 %s" cmd (or port ""))))
+    (unless (member cmd g17-command-history)
+      (push cmd g17-command-history)
+      (when (> (length g17-command-history) 100)
+        (setcdr (nthcdr 99 g17-command-history) nil)))))
 
 (defun g17-exec-cmd(cmd)
   (interactive "Mcmd: ")
@@ -112,6 +120,13 @@
   (interactive)
   (g17-exec-cmd-1 (format "ls CoRun(TEST_CLIENT.CoGetTestUsers, HostId, 10)")))
 
+(defun g17-command-history ()
+  "从历史记录中选择一个命令执行"
+  (interactive)
+  (if (null g17-command-history)
+      (message "暂无历史命令")
+    (let* ((cmd (completing-read "选择历史命令: " g17-command-history)))
+      (g17-exec-cmd-1 cmd))))
 
 (provide 'init-g17-work)
 
