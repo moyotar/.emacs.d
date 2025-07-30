@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t; -*-
-(setq gc-cons-threshold (* 100 1024 1024))
+(setq gc-cons-threshold (* 200 1024 1024)
+      gc-cons-percentage 0.8)
 
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -138,7 +139,7 @@
 ;; Note: Need to update my-packages's value after installed a new package every time.
 ;; ielm: `(setq my-packages ',(mapcar #'el-get-as-symbol (el-get-list-package-names-with-status "installed")))
 (setq my-packages
-      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode compat copilot dash deferred dockerfile-mode editorconfig el-get emacs-aio emacs-async emacs-theme-gruvbox epl exec-path-from-shell expand-region f flycheck fold-this ghub go-mode gptel graphql helm helm-ag helm-gtags helm-projectile helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist llama lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner tablist transient treepy use-package vlfi wfnames with-editor yaml yaml-imenu yaml-mode yasnippet yasnippet-snippets))
+      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode compat copilot dash deferred dockerfile-mode editorconfig el-get emacs-aio emacs-async emacs-theme-gruvbox epl exec-path-from-shell expand-region f flycheck fold-this ghub go-mode gptel graphql helm helm-ag helm-gtags helm-projectile helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist llama lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner tablist transient treepy use-package vlfi wfnames with-editor yaml yaml-imenu yaml-mode yasnippet yasnippet-snippets mcp))
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
 
@@ -481,6 +482,8 @@ OPTIONS explicit command line arguments to ag"
 
 (use-package lua-mode
   :config
+  (setq lua-indent-nested-block-content-align nil)
+
   (defun my-lua-send-file ()
     (interactive)
     (lua-send-string (format "_ = dofile('%s')" buffer-file-name))
@@ -652,32 +655,60 @@ OPTIONS explicit command line arguments to ag"
 
   ;; 其他自定义设置
   (setq copilot-max-char -1)
+  (setq copilot-idle-delay 0.1)
   ;; (setq copilot-enable-predicates '(copilot--buffer-changed)
   )
 
+
 (use-package gptel
   :defer (use-package-defer-time)
+  :bind (("C-c g g" . gptel)
+	 ("C-c g s" . gptel-send)
+         ("C-c g m" . gptel-menu)
+         ("C-c g a" . gptel-add)
+         ("C-c g t" . gptel-tools)
+	 ("C-c g r" . gptel-rewrite))
   :config
-  ;; 设置默认模型
-  (setq gptel-model 'deepseek-chat
-      gptel-backend
-      (gptel-make-deepseek "DeepSeek"
-        :stream t
-	;; ~/.authinfo
-	;; machine api.deepseek.com login apikey password your_api_key
-        :key (auth-source-pick-first-password
-              :host "api.deepseek.com"
-              :user "apikey")))
-  
-  (defun gptel-toggle-deepseek-model ()
-    (interactive)
-    (setq gptel-model
-          (if (eq gptel-model 'deepseek-chat)
-              'deepseek-reasoner
-            'deepseek-chat))
-    (message "🔄 Deepseek model switched to %s" gptel-model))
+  (require 'gptel-integrations)
+  (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+  (gptel-make-openai "OpenRouter"               
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :stream t
+    :key (auth-source-pick-first-password
+          :host "openrouter.ai"
+          :user "apikey")
+    :models '(deepseek/deepseek-chat-v3-0324:free
+              deepseek/deepseek-r1-0528:free
+	      qwen/qwen3-coder:free
+	      openai/gpt-4o-mini
+              openai/gpt-4.1-mini
+	      openai/gpt-4.1
+	      anthropic/claude-sonnet-4
+              anthropic/claude-3.5-haiku
+              google/gemini-2.0-flash-001))
 
-  (define-key gptel-mode-map (kbd "C-c r") #'gptel-toggle-deepseek-model))
+  (setq gptel-model 'deepseek-chat
+        gptel-backend
+        (gptel-make-deepseek "DeepSeek"
+          :stream t
+          :key (auth-source-pick-first-password
+                :host "api.deepseek.com"
+                :user "apikey")))
+  
+  (setq gptel-use-tools t)
+  ;; (setq gptel-default-mode 'text-mode)
+  )
+
+(use-package mcp
+  :after gptel
+  :custom (mcp-hub-servers
+           `(("filesystem" . (:command "npx" :args ("-y" "@modelcontextprotocol/server-filesystem" "~")))
+             ("fetch" . (:command "uvx" :args ("mcp-server-fetch")))
+             )
+  :config (require 'mcp-hub)
+  :hook (after-init . mcp-hub-start-all-server)))
+
 
 (provide 'init)
 ;;; init.el ends here
