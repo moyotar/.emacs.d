@@ -22,10 +22,10 @@
                       suffix "0"))
             (setq port (shell-command-to-string (format "echo '%s' | grep -Eoh '[0-9]+' | tr -d '\n'" port-conf))))))
     (message (shell-command-to-string (format "echo '%s' | nc -w 2 127.0.0.1 %s" cmd (or port ""))))
-    (unless (member cmd g17-command-history)
-      (push cmd g17-command-history)
-      (when (> (length g17-command-history) 100)
-        (setcdr (nthcdr 99 g17-command-history) nil)))))
+    (setq g17-command-history
+          (cons cmd (remove cmd g17-command-history)))
+    (when (> (length g17-command-history) 100)
+      (setq g17-command-history (nthcdr 0 (butlast g17-command-history (- (length g17-command-history) 100)))))))
 
 (defun g17-exec-cmd(cmd)
   (interactive "Mcmd: ")
