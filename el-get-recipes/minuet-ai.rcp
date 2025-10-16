@@ -1,0 +1,5 @@
+(:name minuet-ai
+       :description "Dance with LLM in Your Code. Minuet offers code completion as-you-type from popular LLMs including OpenAI, Gemini, Claude, Ollama, Llama.cpp, Codestral, and more."
+       :type github
+       :pkgname "milanglacier/minuet-ai.el"
+       :depends (plz dash))

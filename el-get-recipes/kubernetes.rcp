@@ -1,0 +1,4 @@
+(:name treesit-auto
+       :description "Manage Kubernetes clusters with Emacs."
+       :type github
+       :pkgname "kubernetes-el/kubernetes-el")

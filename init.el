@@ -2,6 +2,8 @@
 (setq gc-cons-threshold (* 200 1024 1024)
       gc-cons-percentage 0.8)
 
+(setq xterm-max-cut-length 5242880)	;; 5MB
+
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
@@ -139,7 +141,8 @@
 ;; Note: Need to update my-packages's value after installed a new package every time.
 ;; ielm: `(setq my-packages ',(mapcar #'el-get-as-symbol (el-get-list-package-names-with-status "installed")))
 (setq my-packages
-      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode compat copilot dash deferred dockerfile-mode editorconfig el-get emacs-aio emacs-async emacs-theme-gruvbox epl exec-path-from-shell expand-region f flycheck fold-this ghub go-mode gptel graphql helm helm-ag helm-gtags helm-projectile helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist llama lsp-mode lua-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package paredit pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smartparens smex spinner tablist transient treepy use-package vlfi wfnames with-editor yaml yaml-imenu yaml-mode yasnippet yasnippet-snippets mcp))
+      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode compat copilot dash deferred dockerfile-mode editorconfig el-get emacs-aio emacs-async emacs-theme-gruvbox epl exec-path-from-shell expand-region f flycheck fold-this ghub go-mode gptel graphql helm helm-ag helm-gtags helm-projectile helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist llama lsp-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smex spinner tablist transient treepy use-package vlfi wfnames with-editor yaml yaml-imenu yaml-mode yasnippet yasnippet-snippets mcp treesit-auto lua-mode kubernetes))
+
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
 
@@ -186,6 +189,7 @@
   :config
   (define-key helm-map (kbd "C-r") 'helm-minibuffer-history)
   (helm-mode 1)
+  (setq helm-move-to-line-cycle-in-source nil)
   (setq helm-follow-mode-persistent t)
   (setq helm-minibuffer-history-must-match nil)
   )
@@ -331,10 +335,8 @@ OPTIONS explicit command line arguments to ag"
   (add-hook 'after-init-hook (lambda () (sml/setup) (load-theme 'smart-mode-line-powerline t)))
   )
 
-(use-package cc-mode
+(use-package c-ts-mode
   :config
-  (define-key c-mode-base-map (kbd "RET") 'c-context-line-break)
-  
   (defun hook-c/c++-insert-function ()
     "check if need to convert '.' to '->' in c/c++ mode"
     (condition-case nil
@@ -357,17 +359,16 @@ OPTIONS explicit command line arguments to ag"
 							       )))))
       (t ())
       ))
+
+  (setq c-ts-mode-indent-style 'bsd)
+  (setq c-ts-mode-indent-offset 8)
+  (setq indent-tabs-mode t)
   
   (defun my-c-mode-hook ()
     (add-hook 'post-self-insert-hook 'hook-c/c++-insert-function 0 t)
 
-    (c-set-offset 'substatement-open 0)
-    (setq c-basic-offset 8          ;; 基本缩进宽度
-	  indent-tabs-mode t        ;; 禁止空格替换Tab
-	  default-tab-width 8)      ;; 默认Tab宽度
-    
     (local-set-key (kbd "C-c .") 'ace-mc-add-multiple-cursors)
-    (setq-local sp-escape-quotes-after-insert nil)
+    ;; (setq-local sp-escape-quotes-after-insert nil)
     (let* ((file-name (buffer-file-name))
 	   (is-windows (equal 'windows-nt system-type))
 	   (exec-suffix (if is-windows ".exe" ".out"))
@@ -376,13 +377,11 @@ OPTIONS explicit command line arguments to ag"
 	  (progn
 	    (setq file-name (file-name-nondirectory file-name))
 	    (let ((out-file (concat (file-name-sans-extension file-name) exec-suffix)))
-	      (setq-local compile-command (format "g++ -std=c++17 '%s' -o '%s' && .%s'%s'" file-name out-file os-sep out-file)))
+	      (setq-local compile-command (format "g++ -std=c++20 '%s' -o '%s' && .%s'%s'" file-name out-file os-sep out-file)))
 	    )
 	))
     )
-  (add-hook 'c-mode-hook 'my-c-mode-hook)
-  (add-hook 'c++-mode-hook 'my-c-mode-hook)
-
+  (add-hook 'c-ts-base-mode-hook 'my-c-mode-hook)
   :defer (use-package-defer-time)
   )
 
@@ -482,23 +481,14 @@ OPTIONS explicit command line arguments to ag"
 
 (use-package lua-mode
   :config
-  (setq lua-indent-nested-block-content-align nil)
-
-  (defun my-lua-send-file ()
-    (interactive)
-    (lua-send-string (format "_ = dofile('%s')" buffer-file-name))
-    (switch-to-buffer-other-window "*lua*")
-    )
+  
   (add-hook 'lua-mode-hook
-	    (lambda()
-	      (setq-local company-backends
-			   '((company-lua
-			     company-yasnippet)))
+	    (lambda ()
 	      (setq
-	       tab-width 8
 	       indent-tabs-mode t
 	       lua-indent-level 8
-	       )))
+	       )
+	      ))
   
   :defer (use-package-defer-time)
   )
@@ -598,16 +588,18 @@ OPTIONS explicit command line arguments to ag"
   :defer (use-package-defer-time)
   )
 
-(use-package smartparens-config
+
+(use-package elec-pair
+  :hook (prog-mode . electric-pair-mode)
   :config
-  (sp-use-paredit-bindings)
-  (dolist (key '("M-<up>" "M-<down>" "C-<right>"
-		 "C-<left>" "C-M-<left>" "C-M-<right>"))
-    (define-key smartparens-mode-map (kbd key) nil))
-  (smartparens-global-mode t)
-  (sp-local-pair 'prog-mode "{" nil :post-handlers '(("||\n[i]" "RET")))
-  
-  :defer (use-package-defer-time)
+  ;; ;; Custom pairs (extend as needed)
+  ;; (setq electric-pair-pairs '(
+  ;;     (?\" . ?\")
+  ;;     (?\{ . ?\})
+  ;;     (?\( . ?\))
+  ;;     (?\[ . ?\])
+  ;;     (?` . ?`)
+  ;; ))
   )
 
 (use-package lsp-mode
@@ -654,50 +646,53 @@ OPTIONS explicit command line arguments to ag"
   (define-key copilot-completion-map (kbd "C-M-p") 'copilot-previous-completion)
 
   ;; 其他自定义设置
+  (setq copilot-indent-offset-warning-disable t)
   (setq copilot-max-char -1)
   (setq copilot-idle-delay 0.1)
   ;; (setq copilot-enable-predicates '(copilot--buffer-changed)
   )
 
-
 (use-package gptel
   :defer (use-package-defer-time)
   :bind (("C-c g g" . gptel)
-	 ("C-c g s" . gptel-send)
+         ("C-c g s" . gptel-send)
          ("C-c g m" . gptel-menu)
          ("C-c g a" . gptel-add)
          ("C-c g t" . gptel-tools)
-	 ("C-c g r" . gptel-rewrite))
+         ("C-c g r" . gptel-rewrite))
   :config
   (require 'gptel-integrations)
   (add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
-  (gptel-make-openai "OpenRouter"               
+  (setq gptel-model 'gpt-4.1
+	gptel-backend  (gptel-make-gh-copilot "Copilot"))
+  
+  (gptel-make-deepseek "DeepSeek"
+    :stream t
+    :key (auth-source-pick-first-password
+          :host "api.deepseek.com"
+          :user "apikey")
+    :models '(deepseek-chat
+              deepseek-reasoner))
+
+  (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :endpoint "/api/v1/chat/completions"
     :stream t
     :key (auth-source-pick-first-password
-          :host "openrouter.ai"
-          :user "apikey")
-    :models '(deepseek/deepseek-chat-v3-0324:free
-              deepseek/deepseek-r1-0528:free
+	  :host "openrouter.ai"
+	  :user "apikey")
+    :models '(deepseek/deepseek-chat-v3.1:free
+	      qwen/qwen3-coder
 	      qwen/qwen3-coder:free
-	      openai/gpt-4o-mini
-              openai/gpt-4.1-mini
-	      openai/gpt-4.1
+	      openai/gpt-5-nano
+	      openai/gpt-5-mini
+	      openai/gpt-5
 	      anthropic/claude-sonnet-4
-              anthropic/claude-3.5-haiku
-              google/gemini-2.0-flash-001))
-
-  (setq gptel-model 'deepseek-chat
-        gptel-backend
-        (gptel-make-deepseek "DeepSeek"
-          :stream t
-          :key (auth-source-pick-first-password
-                :host "api.deepseek.com"
-                :user "apikey")))
-  
+	      anthropic/claude-3.5-haiku
+	      google/gemini-2.5-flash-lite
+	      google/gemini-2.5-flash
+	      google/gemini-2.0-flash-001))
   (setq gptel-use-tools t)
-  ;; (setq gptel-default-mode 'text-mode)
   )
 
 (use-package mcp
@@ -708,6 +703,21 @@ OPTIONS explicit command line arguments to ag"
              )
   :config (require 'mcp-hub)
   :hook (after-init . mcp-hub-start-all-server)))
+
+(use-package treesit-auto
+  :config
+  (setq treesit-auto-install 'prompt)
+  (setq treesit-language-source-alist
+        '((c "https://github.com/tree-sitter/tree-sitter-c" "v0.23.4")
+          ))
+  (delete 'lua treesit-auto-langs)
+  (global-treesit-auto-mode))
+
+(use-package kubernetes
+  :commands (kubernetes-overview)
+  :config
+  (setq kubernetes-poll-frequency 3600
+        kubernetes-redraw-frequency 3600))
 
 
 (provide 'init)

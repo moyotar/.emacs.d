@@ -1,0 +1,4 @@
+(:name treesit-auto
+       :description "Automatic installation, usage, and fallback for tree-sitter major modes"
+       :type github
+       :pkgname "renzmann/treesit-auto")
