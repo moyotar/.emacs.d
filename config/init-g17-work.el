@@ -33,6 +33,12 @@
     (message "执行命令: %s" command)
     (g17-exec-cmd-1 command)))
 
+(defun g17-exec-noret-cmd(cmd)
+  (interactive "Mcmd: ")
+  (let ((command (format "ls %s" cmd)))
+	(message "执行命令: %s" command)
+	(g17-exec-cmd-1 command)))
+
 (defun g17-update()
   (interactive)
   (let* ((file-name (file-relative-name (buffer-file-name) (format "%s/logic" (projectile-project-root)))))
@@ -41,17 +47,67 @@
       (g17-exec-cmd-1 (format "ls Update(\"%s\")" file-name)))))
 
 (defun call-this-split-args (input-str)
-  "解析用户输入的参数，支持 Lua 格式字符串（逗号分隔但不拆分字符串内的逗号）"
-  (let ((regex "\\([^,\"']+\\|\"[^\"]*\"\\|'[^']*'\\)")
-        (start 0)
-        args)
-    (while (string-match regex input-str start)
-      (push (match-string 0 input-str) args)
-      (setq start (match-end 0))
-      (when (and (< start (length input-str))
-                 (char-equal (aref input-str start) ?,))
-        (setq start (1+ start))))
-    (reverse args)))
+  "分割 Lua 参数，支持数字、字符串和嵌套 table '{}'"
+  (let ((len (length input-str))
+        (args '())
+        (i 0))
+    (while (< i len)
+      (cond
+       ;; 跳过空白和逗号
+       ((member (aref input-str i) '(?, ?\s))
+        (setq i (1+ i)))
+       
+       ;; 处理字符串 "
+       ((eq (aref input-str i) ?\")
+        (let ((start i))
+          (setq i (1+ i))
+          (while (and (< i len)
+                      (not (and
+                            (eq (aref input-str i) ?\")
+                            (not (eq (aref input-str (1- i)) ?\\)))))
+            (setq i (1+ i)))
+          (setq args (append args
+                             (list (substring input-str start (1+ i)))))
+          (setq i (1+ i))))
+       
+       ;; 处理字符串 '
+       ((eq (aref input-str i) ?\')
+        (let ((start i))
+          (setq i (1+ i))
+          (while (and (< i len)
+                      (not (and
+                            (eq (aref input-str i) ?\')
+                            (not (eq (aref input-str (1- i)) ?\\)))))
+            (setq i (1+ i)))
+          (setq args (append args
+                             (list (substring input-str start (1+ i)))))
+          (setq i (1+ i))))
+       
+       ;; 处理 table {
+       ((eq (aref input-str i) ?{)
+        (let ((depth 1)
+              (start i))
+          (setq i (1+ i)) ; 跳过第一个 {
+          (while (and (< i len) (> depth 0))
+            (cond
+             ((eq (aref input-str i) ?{)
+              (setq depth (1+ depth)))
+             ((eq (aref input-str i) ?})
+              (setq depth (1- depth))))
+            (setq i (1+ i)))
+          ;; 把整个 table 串进参数（包括花括号）
+          (setq args (append args
+                             (list (substring input-str start i))))))
+       
+       ;; 处理一般类型（数字、未加引号的字符串）
+       (t
+        (let ((start i))
+          (while (and (< i len)
+                      (not (member (aref input-str i) '(?, ?\s))))
+            (setq i (1+ i)))
+          (setq args (append args
+                             (list (string-trim (substring input-str start i)))))))))
+    args))
 
 (defun call-this-generate-command ()
   "解析当前 Lua 函数，并返回正确的远程调用命令"
