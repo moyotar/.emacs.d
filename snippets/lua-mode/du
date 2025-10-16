@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: du
+# key: du
+# local ${1:UserId} = ${2:UserObj}:GetId()
+# --
+local UserId = UserObj:GetId()

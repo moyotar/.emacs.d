@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tm
+# key: tm
+# --
+UserObj:TellMe(${1:"Fuck you!"})

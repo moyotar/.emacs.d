@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: g17cmd
+# key: g17cmd
+# --
+echo '$1' | nc -q 3 localhost 1630
