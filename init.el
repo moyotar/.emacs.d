@@ -666,6 +666,28 @@ OPTIONS explicit command line arguments to ag"
   (setq gptel-model 'gpt-4.1
 	gptel-backend  (gptel-make-gh-copilot "Copilot"))
   
+  (defun my-code-review ()
+  "自动化代码审查流程"
+  (interactive)
+  (let ((review-buffer "*Code Review*")
+	(gptel-model 'gemini-3-pro-preview))
+    ;; 1. 清除所有 context
+    (gptel-context-remove-all)
+    ;; 2. 添加当前 buffer 到 context
+    (gptel-context-add)
+    ;; 3. 删除旧的审查会话并创建新的
+    (when (get-buffer review-buffer)
+      (kill-buffer review-buffer))
+    ;; 4. 创建新会话
+    (gptel review-buffer)
+    (with-current-buffer review-buffer
+      ;; 插入审查提示
+      (insert "你是一个程序专家，专业做代码审查，负责分析上面的diff，发现并输出包括但不限于bug 、命名对不上、逻辑混乱、性能效率等问题。")
+      ;; 5. 发送请求
+      (gptel-send)
+      ;; 切换到审查 buffer
+      (switch-to-buffer review-buffer))))
+  
   (gptel-make-deepseek "DeepSeek"
     :stream t
     :key (auth-source-pick-first-password
