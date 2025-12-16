@@ -605,7 +605,9 @@ OPTIONS explicit command line arguments to ag"
 (use-package lsp-mode
   :hook
   ((c-mode . lsp-deferred)
-   (c++-mode . lsp-deferred))
+   (c-ts-mode . lsp-deferred)
+   (c++-mode . lsp-deferred)
+   (c++-ts-mode . lsp-deferred))
   :commands
   (lsp lsp-deferred)
   :init
