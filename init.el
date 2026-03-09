@@ -759,10 +759,10 @@ OPTIONS explicit command line arguments to ag"
 (use-package agent-shell
   :config
   ;; Load codemaker support from personal config (not from agent-shell package)
-  ;; (require 'agent-shell-codemaker)
-  ;; (add-to-list 'agent-shell-agent-configs
-  ;;              (agent-shell-codemaker-make-agent-config))
-  ;; (setq agent-shell-preferred-agent-config 'codemaker)
+  (require 'agent-shell-codemaker)
+  (add-to-list 'agent-shell-agent-configs
+               (agent-shell-codemaker-make-agent-config))
+  (setq agent-shell-preferred-agent-config 'codemaker)
   :bind
   (("C-c a" . agent-shell)))
 
