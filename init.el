@@ -141,7 +141,27 @@
 ;; Note: Need to update my-packages's value after installed a new package every time.
 ;; ielm: `(setq my-packages ',(mapcar #'el-get-as-symbol (el-get-list-package-names-with-status "installed")))
 (setq my-packages
-      '(ace-jump-mode ace-mc ace-window ample-regexps anaphora autothemer avy bash-completion cl-lib cmake-mode color-theme-zenburn company-lua company-mode compat copilot dash deferred dockerfile-mode editorconfig el-get emacs-aio emacs-async emacs-theme-gruvbox epl exec-path-from-shell expand-region f flycheck fold-this ghub go-mode gptel graphql helm helm-ag helm-gtags helm-projectile helm-smex helm-xref highlight-symbol ht htmlize hydra json-mode json-reformat json-snatcher let-alist llama lsp-mode magit magit-popup markdown-mode multiple-cursors nav-flash org-bullets package pkg-info popup powerline projectile rainbow-delimiters request rich-minority rmsbolt s seq smart-mode-line smex spinner tablist transient treepy use-package vlfi wfnames with-editor yaml yaml-imenu yaml-mode yasnippet yasnippet-snippets mcp treesit-auto lua-mode kubernetes))
+      '(ace-jump-mode ace-mc ace-window acp agent-shell ample-regexps
+		      anaphora autothemer avy bash-completion cl-lib
+		      cmake-mode color-theme-zenburn company-lua
+		      company-mode compat cond-let copilot dash
+		      deferred dockerfile-mode editorconfig el-get
+		      emacs-aio emacs-async emacs-theme-gruvbox epl
+		      exec-path-from-shell expand-region f flycheck
+		      fold-this ghub go-mode gptel graphql helm
+		      helm-ag helm-gtags helm-projectile helm-smex
+		      helm-xref highlight-symbol ht htmlize hydra
+		      json-mode json-reformat json-snatcher kubernetes
+		      let-alist llama lsp-mode lua-mode magit
+		      magit-popup markdown-mode mcp multiple-cursors
+		      nav-flash org-bullets package paredit pkg-info
+		      plz popup powerline projectile
+		      rainbow-delimiters request rich-minority rmsbolt
+		      s seq shell-maker smart-mode-line smartparens
+		      smex spinner tablist transient treepy
+		      treesit-auto use-package vlfi wfnames
+		      with-editor yaml yaml-imenu yaml-mode yasnippet
+		      yasnippet-snippets))
 
 (when (equal system-type 'gnu/linux)
   (setq my-packages (append my-packages '(bash-completion))))
@@ -736,6 +756,16 @@ OPTIONS explicit command line arguments to ag"
   :config
   (setq kubernetes-poll-frequency 3600
         kubernetes-redraw-frequency 3600))
+
+(use-package agent-shell
+  :config
+  ;; Load codemaker support from personal config (not from agent-shell package)
+  ;; (require 'agent-shell-codemaker)
+  ;; (add-to-list 'agent-shell-agent-configs
+  ;;              (agent-shell-codemaker-make-agent-config))
+  ;; (setq agent-shell-preferred-agent-config 'codemaker)
+  :bind
+  (("C-c a" . agent-shell)))
 
 
 (provide 'init)

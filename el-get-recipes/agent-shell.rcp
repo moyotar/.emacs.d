@@ -1,0 +1,5 @@
+(:name agent-shell
+       :description "A native Emacs buffer to interact with LLM agents powered by ACP"
+       :type github
+       :pkgname "xenodium/agent-shell"
+       :depends (acp shell-maker))

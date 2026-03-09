@@ -1,0 +1,4 @@
+(:name shell-maker
+       :description "Create Emacs shells backed by either local or cloud services."
+       :type github
+       :pkgname "xenodium/shell-maker")
