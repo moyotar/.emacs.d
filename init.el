@@ -61,7 +61,7 @@
 (prefer-coding-system 'gbk)
 (define-coding-system-alias 'UTF-8 'utf-8)
 (prefer-coding-system 'utf-8)
-(setq file-name-coding-system 'UTF-8-unix)
+(setq file-name-coding-system 'utf-8-unix)
 (setq load-prefer-newer t)
 
 (setq lsp-use-plists t)
@@ -98,7 +98,7 @@
   (when (member "Source Code Pro" (font-family-list))
     (set-face-attribute
      'default nil
-     :font (fontspec :family "Source Code Pro"
+     :font (font-spec :family "Source Code Pro"
                      :weight 'normal
                      :slant 'normal
                      :size 16.0)))
@@ -737,10 +737,9 @@ OPTIONS explicit command line arguments to ag"
   :after gptel
   :custom (mcp-hub-servers
            `(("filesystem" . (:command "npx" :args ("-y" "@modelcontextprotocol/server-filesystem" "~")))
-             ("fetch" . (:command "uvx" :args ("mcp-server-fetch")))
-             )
+             ("fetch" . (:command "uvx" :args ("mcp-server-fetch")))))
   :config (require 'mcp-hub)
-  :hook (after-init . mcp-hub-start-all-server)))
+  :hook (after-init . mcp-hub-start-all-server))
 
 (use-package treesit-auto
   :config
