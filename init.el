@@ -144,7 +144,7 @@
       '(ace-jump-mode ace-mc ace-window acp agent-shell ample-regexps
 		      anaphora autothemer avy bash-completion cl-lib
 		      cmake-mode color-theme-zenburn company-lua
-		      company-mode compat cond-let copilot dash
+		      company-mode compat copilot dash
 		      deferred dockerfile-mode editorconfig el-get
 		      emacs-aio emacs-async emacs-theme-gruvbox epl
 		      exec-path-from-shell expand-region f flycheck
