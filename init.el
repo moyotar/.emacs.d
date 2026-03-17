@@ -672,6 +672,13 @@ OPTIONS explicit command line arguments to ag"
   (setq copilot-max-char -1)
   (setq copilot-idle-delay 0.1)
   ;; (setq copilot-enable-predicates '(copilot--buffer-changed)
+
+  ;; 屏蔽 "Request was canceled" 的 error 日志（-32800），该错误由用户
+  ;; 快速输入时 copilot 主动取消上一次请求触发，属于正常行为无需提示。
+  (define-advice copilot--log (:before-while (level format &rest args) suppress-canceled)
+    "Suppress noisy `Request was canceled' (-32800) error messages."
+    (not (and (eq level 'error)
+              (string-match-p "Request was canceled" (apply #'format format args)))))
   )
 
 (use-package gptel
@@ -763,6 +770,12 @@ OPTIONS explicit command line arguments to ag"
   ;; (add-to-list 'agent-shell-agent-configs
   ;;              (agent-shell-codemaker-make-agent-config))
   ;; (setq agent-shell-preferred-agent-config 'codemaker)
+  (setq agent-shell-prefer-viewport-interaction t)
+  (defun agent-shell-at-current-dir ()
+    "Start agent-shell with current directory as working directory."
+    (interactive)
+    (let ((agent-shell-cwd-function (lambda () default-directory)))
+      (call-interactively #'agent-shell)))
   :bind
   (("C-c a" . agent-shell)))
 
