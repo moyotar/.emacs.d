@@ -256,19 +256,22 @@ OPTIONS explicit command line arguments to ag"
     (interactive (if current-prefix-arg (list (helm-read-string "option: " "" 'helm-ag--extra-options-history))))
     (if (require 'helm-ag nil t)
         (if (projectile-project-p)
-	    (let* ((ignored (when (helm-projectile--projectile-ignore-strategy)
+	    (let* ((dirconfig (projectile-parse-dirconfig-file))
+		   (ignored (when (helm-projectile--projectile-ignore-strategy)
 			      (mapconcat (lambda (i)
                                            (format "-g !%s" i))
                                          (append (helm-projectile--ignored-files)
 						 (helm-projectile--ignored-directories)
-                                                 (cadr (projectile-parse-dirconfig-file)))
+                                                 (when dirconfig
+                                                   (projectile-dirconfig-ignore dirconfig)))
                                          " ")))
 		   (helm-ag-base-command (concat helm-ag-base-command
                                                  (when ignored (concat " " ignored))
                                                  " " options))
 		   (current-prefix-arg nil))
 	      (helm-do-ag (projectile-project-root)
-			  (car (projectile-parse-dirconfig-file))))
+			  (when dirconfig
+			    (projectile-dirconfig-keep dirconfig))))
 	  (error "You're not in a project"))
       (when (yes-or-no-p "`helm-ag' is not installed. Install? ")
 	(condition-case nil
@@ -771,11 +774,6 @@ OPTIONS explicit command line arguments to ag"
   ;;              (agent-shell-codemaker-make-agent-config))
   ;; (setq agent-shell-preferred-agent-config 'codemaker)
   (setq agent-shell-prefer-viewport-interaction t)
-  (defun agent-shell-at-current-dir ()
-    "Start agent-shell with current directory as working directory."
-    (interactive)
-    (let ((agent-shell-cwd-function (lambda () default-directory)))
-      (call-interactively #'agent-shell)))
   :bind
   (("C-c a" . agent-shell)))
 
